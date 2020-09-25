@@ -9,12 +9,17 @@ class Account {
 
 }
 
-// creates a transaction obj to allow a user to withdraw money from their balance
-class Withdrawal {
+class Transaction {
 
   constructor(amount, account) {
-    this.amount = amount;
+    this.amount  = amount;
+    this.account = account;
   }
+
+}
+
+// creates a transaction obj to allow a user to withdraw money from their balance
+class Withdrawal extends Transaction {
 
   //  finalize and apply the transaction to the account's balance
   commit() {
@@ -24,14 +29,11 @@ class Withdrawal {
 }
 
 // creates a transaction obj to allow a user to deposit money to their balance
-class Deposit {
-
-  constructor(amount) {
-    this.amount = amount;
-  }
+class Deposit extends Transaction {
 
   //  finalize and apply the transaction to the account's balance
   commit() {
+    console.log(this);
     this.account.balance += this.amount;
   }
 
@@ -43,16 +45,16 @@ class Deposit {
 // We use the code below to "drive" the application logic above and make sure it's working as expected
 const myAccount = new Account("snow-patrol");
 
-t1 = new Withdrawal(50.25);
+t1 = new Deposit(500, myAccount);
 t1.commit();
 console.log('Transaction 1:', t1);
 
-t2 = new Withdrawal(9.99);
+t2 = new Withdrawal(9.99, myAccount);
 t2.commit();
 console.log('Transaction 2:', t2);
 
-t3 = new Deposit(120.00);
+t3 = new Withdrawal(125.25, myAccount);
 t3.commit();
 console.log('Transaction 3:', t3);
 
-console.log('Balance:', balance);
+console.log('Balance:', myAccount.balance);

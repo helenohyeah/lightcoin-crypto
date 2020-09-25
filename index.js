@@ -3,10 +3,18 @@ class Account {
 
   constructor(username) {
     this.username = username;
-    // Have the account balance start at $0 since that makes more sense.
-    this.balance = 0;
+    this.transactions = [];
+  }
+  
+  get balance() {
+    let balance = 0;
+    this.transactions.forEach((t) => balance += t.value);
+    return balance;
   }
 
+  addTransaction(transaction) {
+    this.transactions.push(transaction);
+  }
 }
 
 // creates a transaction
@@ -19,7 +27,10 @@ class Transaction {
 
   // finalize and apply the transaction to the account's balance
   commit() {
-    this.account.balance += this.value;
+    // Keep track of the time of the transaction
+    this.time = new Date();
+    // Add the transaction to the account
+    this.account.addTransaction(this);
   }
 }
 
@@ -51,6 +62,7 @@ t1 = new Deposit(500.00, myAccount);
 t1.commit();
 console.log('Transaction 1:', `$${t1.amount}`);
 
+
 t2 = new Withdrawal(9.99, myAccount);
 t2.commit();
 console.log('Transaction 2:', `$${t2.amount}`);
@@ -60,4 +72,3 @@ t3.commit();
 console.log('Transaction 3:', `$${t3.amount}`);
 
 console.log('Balance:', `$${myAccount.balance}`);
-console.log(myAccount);

@@ -34,7 +34,7 @@ class Transaction {
       // Add the transaction to the account
       this.account.addTransaction(this);
     } else {
-      return console.log(`Oh no, Insufficient balance!`);;
+      return console.log(`Oh no, Insufficient balance!`);
     }
   }
 
@@ -74,15 +74,15 @@ class Deposit extends Transaction {
 // We use the code below to "drive" the application logic above and make sure it's working as expected
 const myAccount = new Account("snow-patrol");
 
-t1 = new Deposit(500.00, myAccount);
+const t1 = new Deposit(500.00, myAccount);
 t1.commit();
 console.log('Transaction 1:', `$${t1.amount}`);
 
-t2 = new Withdrawal(500.00, myAccount);
+const t2 = new Withdrawal(500.00, myAccount);
 t2.commit();
 console.log('Transaction 2:', `$${t2.amount}`);
 
-t3 = new Withdrawal(125.25, myAccount);
+const t3 = new Withdrawal(125.25, myAccount);
 t3.commit();
 console.log('Transaction 3:', `$${t3.amount}`);
 

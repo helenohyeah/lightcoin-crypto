@@ -27,11 +27,17 @@ class Transaction {
 
   // finalize and apply the transaction to the account's balance
   commit() {
-    // Keep track of the time of the transaction
-    this.time = new Date();
-    // Add the transaction to the account
-    this.account.addTransaction(this);
+    // check if transaction is allowed
+    if (this.isAllowed(this.account.balance, this.amount)) {
+      // Keep track of the time of the transaction
+      this.time = new Date();
+      // Add the transaction to the account
+      this.account.addTransaction(this);
+    } else {
+      return console.log(`Oh no, Insufficient balance!`);;
+    }
   }
+
 }
 
 // allow a user to withdraw money from their balance
@@ -40,6 +46,11 @@ class Withdrawal extends Transaction {
   // returns value of change to the balance
   get value() {
     return -this.amount;
+  }
+
+  // only allow withdraw if balance is greater than the amount
+  isAllowed(balance, amount) {
+    return balance >= amount ? true : false;
   }
 
 }
@@ -52,6 +63,11 @@ class Deposit extends Transaction {
     return this.amount;
   }
 
+  // always allow deposits
+  isAllowed() {
+    return true;
+  }
+
 }
 
 // DRIVER CODE BELOW
@@ -62,8 +78,7 @@ t1 = new Deposit(500.00, myAccount);
 t1.commit();
 console.log('Transaction 1:', `$${t1.amount}`);
 
-
-t2 = new Withdrawal(9.99, myAccount);
+t2 = new Withdrawal(500.00, myAccount);
 t2.commit();
 console.log('Transaction 2:', `$${t2.amount}`);
 

@@ -28,13 +28,15 @@ class Transaction {
   // finalize and apply the transaction to the account's balance
   commit() {
     // check if transaction is allowed
-    if (this.isAllowed(this.account.balance, this.amount)) {
+    if (this.isAllowed()) {
       // Keep track of the time of the transaction
       this.time = new Date();
       // Add the transaction to the account
       this.account.addTransaction(this);
+      return true;
     } else {
-      return console.log(`Oh no, Insufficient balance!`);
+      console.log(`Oh no, Insufficient balance!`)
+      return false;
     }
   }
 
@@ -49,8 +51,8 @@ class Withdrawal extends Transaction {
   }
 
   // only allow withdraw if balance is greater than the amount
-  isAllowed(balance, amount) {
-    return balance >= amount ? true : false;
+  isAllowed() {
+    return (this.account.balance - this.amount >= 0);
   }
 
 }
@@ -75,15 +77,15 @@ class Deposit extends Transaction {
 const myAccount = new Account("snow-patrol");
 
 const t1 = new Deposit(500.00, myAccount);
-t1.commit();
+console.log('Commit result: ', t1.commit());
 console.log('Transaction 1:', `$${t1.amount}`);
 
 const t2 = new Withdrawal(500.00, myAccount);
-t2.commit();
+console.log('Commit result: ', t2.commit());
 console.log('Transaction 2:', `$${t2.amount}`);
 
 const t3 = new Withdrawal(125.25, myAccount);
-t3.commit();
+console.log('Commit result: ', t3.commit());
 console.log('Transaction 3:', `$${t3.amount}`);
 
 console.log('Balance:', `$${myAccount.balance}`);
